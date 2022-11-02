@@ -7,7 +7,7 @@
 ### `docker pull <image-name>`
 
 
-- This command pulls the particular image from [dockerhub](hub.docker.com)
+- This command pulls the particular image from [dockerhub](https://hub.docker.com/)
 
 <br>
 
@@ -75,3 +75,12 @@
 - This removes all the containers and images from local machine
 
 <br>
+
+### `docker exec -it <container-id> <command>`
+
+- This command is used when we want to execute certain commands inside the particular container
+- `-it` allows us to provide input to the container 
+    - this is combination of `-i -t` flag in which `-i` means when we execute the command inside the container we want to attach our terminal to std-in channel of that new running process, `-t` flag makes it more readable and provides us more assistance
+    - **eg:** We can use `docker exec -it <container-id> sh` to get access to shell on the container and execute command there, and use `ctrl+d` or exec `exit` to exit from that shell
+
+<br>  
