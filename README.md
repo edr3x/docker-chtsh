@@ -2,7 +2,7 @@
 
 - Cheat sheet for docker
 
-## Commands
+## Basic Commands
 
 ### `docker pull <image-name>`
 
@@ -39,10 +39,28 @@
 
 <br>
 
+### `docker images`
+
+- This command shows list of images present on a system
+
+<br>
+
+### `docker image rm <image-name>`
+
+- Removes specified image, we can add `-f` flag to force delete the image
+
+<br>
+
 ### `docker ps`
 
 - This command shows the list of running containers on the system
 - We can use `-a` flag with this to see all the unactive containers on the system
+
+<br>
+
+### `docker container rm <container-id>`
+
+- This command removes the specific container
 
 <br>
 
@@ -70,6 +88,7 @@
 
 <br>
 
+
 ### `docker system prune`
 
 - This removes all the containers and images from local machine
@@ -83,4 +102,36 @@
     - this is combination of `-i -t` flag in which `-i` means when we execute the command inside the container we want to attach our terminal to std-in channel of that new running process, `-t` flag makes it more readable and provides us more assistance
     - **eg:** We can use `docker exec -it <container-id> sh` to get access to shell on the container and execute command there, and use `ctrl+d` or exec `exit` to exit from that shell
 
-<br>  
+<br>
+
+### `Dockerfile`
+
+- This is a file format which specifies the steps to take when building a image form the list of instructions provided on it.
+- Example:
+
+```Dockerfile
+
+FROM node:17-alpine # imports node version 17 on alpine linux
+
+RUN npm install -g nodemon # installs nodemon as global dependency on specified platform above
+
+WORKDIR /app # specifies working directory on a container
+
+COPY package.json . # copies package.json to that particular directory on container
+
+RUN npm install # installs all other dependencies present in package.json
+
+COPY . . # copies all file form working directory to container directory i.e. /app
+
+EXPOSE 4000 # exposes port of a container
+
+CMD ["npm", "run", "dev"] # start the script from package.json
+
+```
+
+### `docker build <Dockerfile's relative locaion>`
+
+- This command builds a image from a `Dockerfile` contents this gives us image id from that we can create our custom container
+- We can use `-t` flag to name the image, the standard patern is `-t <docker-id>/<project-name>:<version>`
+- cont......
+
