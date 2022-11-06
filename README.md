@@ -145,23 +145,40 @@ CMD ["npm", "run", "dev"] # start the script from package.json
 ```yml
 version: '3.8'
 services:
-  redis-server:
+  redis-server:          
     image: 'redis'
-  node-app:
-    build: .
+  node-app:             # Service name
+    restart: always     # Restart Policies ( more on this below )
+    build: .            # Dockerfile's relative location
     ports:
-      - "5050:8080"
+      - "5050:8080"     # Local-port : Container-port
 ```
+
+**Restart Policies**
+
+- `"no"`            : Never try to restart this container when it crashes
+- `always`          : Always attempt to restart container if it stops for any reason
+- `on-failure`      : Only restart container if it stops with a error code
+- `unless-stopped`  : Always restart unless we forcibly stop it
+
+> Note: We have only quoted `"no"` and not others beacause in a yaml file the value `no` is interpreted as false
+
 
 ### `docker-compose up`
 
-- This command is same as `docker run <image-name>`
+- This command is similar to `docker run <image-name>`. It runs according to config defined at `docker-compose.yml` file
 - Contains `--build` flag which rebuilds the images defined inside of `docker-compose.yml` file. This is same as running both `docker build .` and `docker run <image-name>`
 - We use `-d` flag to launch containers on background
 
 > Note: We can skip `-` and do `docker compose up` and it works fine
 
 <br>
+
+### `docker-compose ps`
+
+- This command prints out the status of the containers running inside of the `docker-compose` file
+
+> Note:  When should run this command from same directory as our `docker-compose.yml` file as when we run this command first it tries to find `docker-compose.yml` file on the local directory and it tries to find all the running containers on our local machine that belong to that specific `docker-compose.yml` file
 
 ### `docker-compose down`
 
