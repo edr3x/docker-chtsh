@@ -2,7 +2,7 @@
 
 - Cheat sheet for docker
 
-## Basic Commands
+## Docker Commands
 
 ### `docker pull <image-name>`
 
@@ -32,6 +32,7 @@
     - Checks if there is that particular image locally if not then it pulls the image from dockerhub
     - Creates a new container from the image name provided
     - Runs the container with the arguments or commands if provided
+- We have `-d` flag that runs the container at background
 
 > Note: this creates new container so only use this command when wanting the new container from the image
 > 
@@ -135,3 +136,41 @@ CMD ["npm", "run", "dev"] # start the script from package.json
 - We can use `-t` flag to name the image, the standard patern is `-t <docker-id>/<project-name>:<version>`
 - cont......
 
+<br>
+
+## Docker-Compose commands
+
+**`docker-compose.yml` file**
+
+```yml
+version: '3.8'
+services:
+  redis-server:
+    image: 'redis'
+  node-app:
+    build: .
+    ports:
+      - "5050:8080"
+```
+
+### `docker-compose up`
+
+- This command is same as `docker run <image-name>`
+- Contains `--build` flag which rebuilds the images defined inside of `docker-compose.yml` file. This is same as running both `docker build .` and `docker run <image-name>`
+- We use `-d` flag to launch containers on background
+
+> Note: We can skip `-` and do `docker compose up` and it works fine
+
+<br>
+
+### `docker-compose down`
+
+- This command stops running docker-compose.yml 
+
+<br>
+
+### `docker-compose down --rmi all -v`
+
+- This command stops docker-compose.yml and deletes all Image, Container and Volume
+
+<br>
