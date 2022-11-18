@@ -138,9 +138,8 @@ CMD ["npm", "run", "dev"] # start the script from package.json
 ### `docker build <Dockerfile's relative locaion>`
 
 - This command builds a image from a `Dockerfile` contents this gives us image id from that we can create our custom container
-- We can use `-t` flag to name the image, the standard patern is `-t <docker-id>/<project-name>:<version>`
+- We can use `-t` flag to name the image, the standard patern is `-t <docker-id>/<project-name>:<version>` then we can use the name provided insted of image-id when creating container form image
 - We can use `-f` flag to speficy the custom Dockerfile like `Dockerfile.dev`
-- cont......
 
 <br>
 
@@ -208,3 +207,30 @@ services:
 - This command stops docker-compose.yml and deletes all Image, Container and Volume
 
 <br>
+
+### For production we use Nginx server to serve our static page
+
+- To do this in production we do this in our `Dockerfile`
+
+```dockerfile
+FROM node:alpine as builder
+
+WORKDIR '/app'
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+FROM nginx
+
+COPY --from=builder /app/build /usr/share/nginx/html
+```
+
+- As we only need the compiled file to serve we only need `node:alpine` image as a builder to build our static web page
+- We build our image from this dockerfile and run that image by `docker run -p <port>:80 <image-id>`
+    - we define the port of local machine on which we want to serve the server
+    - port `80` is default port of nginx server from which it runs our program
